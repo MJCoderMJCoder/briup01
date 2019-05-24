@@ -1,0 +1,72 @@
+drop table book;
+drop table customer;
+drop table orderform;
+drop table orderline;
+
+create table book(
+	id number primary key,
+	name varchar2(100),
+	price number(8,2)
+);
+insert into book values(1,'JAVA核心技术',81.00);
+insert into book values(2,'UNIX技术手册',21.15);
+insert into book values(3,'ORACLE9I参考手册',108.00);
+insert into book values(4,'JSP设计(第三版)',59.25);
+insert into book values(5,'JAVA SERVLET 编程(第二版)',38.25);
+insert into book values(6,'XML 高级编程(第2版)',97.20);
+insert into book values(7,'精通STRUTS:基于MVC的JAVA WEB设计与开发',36.75);
+insert into book values(8,'精通HIBERNATE：JAVA对象持久化技术详解',44.25);
+insert into book values(9,'SPRING IN ACTION中文版',29.25);
+insert into book values(10,'精通EJB 3.0',44.25);
+
+create table customer(
+	id number primary key,
+	name varchar2(20),
+	password varchar2(20),
+	zip varchar2(20),
+	address varchar2(50),
+	telephone varchar2(20),
+	email varchar2(30)
+);
+
+create table orderform(
+	id number primary key,
+    	cost number(8,2),
+	orderdate date,
+    	customerid number references customer(id)
+);
+
+create table orderline(
+	id number primary key,
+	num number not null,
+	orderid number references orderform(id),	
+	bookid number references book(id)
+);
+
+create sequence book_seq start with 1 increment by 1;
+create sequence customer_seq start with 1 increment by 1;
+create sequence orderform_seq start with 1 increment by 1;
+create sequence orderline_seq start with 1 increment by 1;
+
+刘志峰备注：
+要列出用户表中都存在那些表，它们所使用的表空间是那个，可以用下面的语句进行查询
+select table_name,tablespace_name from user_tables;
+删除表中的所有数据delete from tableName;
+
+一般一个oracle只有一个数据库，要查看数据库名，我的电脑——>右键管理
+--->服务和应用程序---->打开服务-->找到oracle服务oracleServer后面加的就是数据库名。
+
+select * from dba_users; 查看数据库里面所有用户，前提是你是有dba权限的帐号，如sys,system
+select * from all_users;  查看你能管理的所有用户！
+select * from user_users; 查看当前用户信息 ！
+
+ 
+
+-- 查询你 当前用户下,有哪些表
+SELECT * FROM user_tables
+
+-- 查询你 当前用户下, 可以访问哪些表 [也就是访问自己 和 其他用户的]
+SELECT * FROM all_tables
+
+-- 查询当前数据库所有的表， 需要你有 DBA 的权限
+SELECT * FROM dba_tables
